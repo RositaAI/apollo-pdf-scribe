@@ -1,7 +1,6 @@
-
 import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { FilePdf, Send } from 'lucide-react';
+import { FileText, Send } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import TypingAnimation from '@/components/TypingAnimation';
@@ -39,7 +38,6 @@ const Index = () => {
 
   const handleSubmit = () => {
     if (pdfUploaded && prompt.trim() !== '') {
-      // Store conversation context in sessionStorage to access in chat page
       sessionStorage.setItem('pdfName', pdfName);
       sessionStorage.setItem('initialPrompt', prompt);
       navigate('/chat');
@@ -60,7 +58,6 @@ const Index = () => {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-b from-white to-gray-50 p-4">
       <div className="w-full max-w-4xl mx-auto relative animate-fade-in backdrop-blur-md">
-        {/* Header with Welcome Message */}
         <div className="text-center mb-12">
           <h1 className="text-4xl font-bold text-gray-800 mb-4">
             <TypingAnimation 
@@ -77,11 +74,10 @@ const Index = () => {
           )}
         </div>
 
-        {/* Wide Input Container */}
         <div className="w-full bg-white rounded-xl shadow-lg p-6 transition-all duration-300 backdrop-blur-lg">
           {pdfUploaded && (
             <div className="bg-blue-50 rounded-lg p-3 mb-6 animate-fade-in flex items-center">
-              <FilePdf className="h-5 w-5 text-blue-500 mr-2" />
+              <FileText className="h-5 w-5 text-blue-500 mr-2" />
               <p className="text-gray-700 text-sm truncate">
                 <span className="font-semibold">Uploaded:</span> {pdfName}
               </p>
@@ -110,7 +106,7 @@ const Index = () => {
               className="h-12 w-12 rounded-full bg-gray-100 hover:bg-gray-200 transition-all duration-300"
               onClick={() => fileInputRef.current?.click()}
             >
-              <FilePdf className="h-5 w-5 text-gray-700" />
+              <FileText className="h-5 w-5 text-gray-700" />
               <span className="sr-only">Upload PDF</span>
             </Button>
             
@@ -131,7 +127,6 @@ const Index = () => {
           </div>
         </div>
 
-        {/* Instructions */}
         {isTypingComplete && (
           <div className="mt-8 text-center text-gray-500 text-sm animate-fade-in">
             <p>Upload your PDF using the document icon, then ask a question.</p>
