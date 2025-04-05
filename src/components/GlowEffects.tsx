@@ -44,16 +44,16 @@ export const GlowFilters = () => {
           </feMerge>
         </filter>
 
-        {/* Improved Apollo name SVG-based glow filter with gradient animation */}
+        {/* Improved Apollo RGB gradient animated glow filter */}
         <filter id="apollo-glow" x="-50%" y="-50%" width="200%" height="200%">
-          <feGaussianBlur stdDeviation="2" result="blur" />
-          <feFlood floodColor="#ffffff" floodOpacity="0.8" result="glowColor"/>
+          <feGaussianBlur stdDeviation="2.5" result="blur" />
+          <feFlood floodColor="#ffffff" floodOpacity="0.9" result="glowColor"/>
           <feComposite in="glowColor" in2="blur" operator="in" result="softGlow"/>
-          <feGaussianBlur in="softGlow" stdDeviation="4" result="expandedGlow"/>
+          <feGaussianBlur in="softGlow" stdDeviation="5" result="expandedGlow"/>
           <feComponentTransfer in="expandedGlow" result="brightGlow">
-            <feFuncR type="linear" slope="2" />
-            <feFuncG type="linear" slope="2" />
-            <feFuncB type="linear" slope="2" />
+            <feFuncR type="linear" slope="2.2" />
+            <feFuncG type="linear" slope="2.2" />
+            <feFuncB type="linear" slope="2.2" />
           </feComponentTransfer>
           <feMerge>
             <feMergeNode in="brightGlow" />
@@ -61,10 +61,22 @@ export const GlowFilters = () => {
           </feMerge>
         </filter>
 
-        {/* Blue character glow filter for typing animation */}
+        {/* White character glow filter for typing animation */}
         <filter id="typing-char-glow" x="-50%" y="-50%" width="200%" height="200%">
+          <feGaussianBlur stdDeviation="2" result="blur" />
+          <feFlood floodColor="#ffffff" floodOpacity="0.8" result="glowColor"/>
+          <feComposite in="glowColor" in2="blur" operator="in" result="softGlow"/>
+          <feGaussianBlur in="softGlow" stdDeviation="2.5" result="expandedGlow"/>
+          <feMerge>
+            <feMergeNode in="expandedGlow" />
+            <feMergeNode in="SourceGraphic" />
+          </feMerge>
+        </filter>
+
+        {/* Cursor glow filter - soft white glow */}
+        <filter id="cursor-glow" x="-50%" y="-50%" width="200%" height="200%">
           <feGaussianBlur stdDeviation="1.5" result="blur" />
-          <feFlood floodColor="#06b6d4" floodOpacity="0.8" result="glowColor"/>
+          <feFlood floodColor="#ffffff" floodOpacity="0.9" result="glowColor"/>
           <feComposite in="glowColor" in2="blur" operator="in" result="softGlow"/>
           <feGaussianBlur in="softGlow" stdDeviation="2" result="expandedGlow"/>
           <feMerge>
@@ -73,17 +85,33 @@ export const GlowFilters = () => {
           </feMerge>
         </filter>
 
-        {/* Cursor glow filter */}
-        <filter id="cursor-glow" x="-50%" y="-50%" width="200%" height="200%">
-          <feGaussianBlur stdDeviation="1" result="blur" />
-          <feFlood floodColor="#06b6d4" floodOpacity="1" result="glowColor"/>
-          <feComposite in="glowColor" in2="blur" operator="in" result="softGlow"/>
-          <feGaussianBlur in="softGlow" stdDeviation="2" result="expandedGlow"/>
-          <feMerge>
-            <feMergeNode in="expandedGlow" />
-            <feMergeNode in="SourceGraphic" />
-          </feMerge>
-        </filter>
+        {/* RGB gradient defs for Apollo text */}
+        <linearGradient id="apollo-rgb-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stopColor="#ff9a9e">
+            <animate
+              attributeName="stopColor"
+              values="#ff9a9e; #fad0c4; #fbc2eb; #a6c1ee; #f5efef; #ff9a9e"
+              dur="8s"
+              repeatCount="indefinite"
+            />
+          </stop>
+          <stop offset="50%" stopColor="#fad0c4">
+            <animate
+              attributeName="stopColor"
+              values="#fad0c4; #fbc2eb; #a6c1ee; #f5efef; #ff9a9e; #fad0c4"
+              dur="8s"
+              repeatCount="indefinite"
+            />
+          </stop>
+          <stop offset="100%" stopColor="#fbc2eb">
+            <animate
+              attributeName="stopColor"
+              values="#fbc2eb; #a6c1ee; #f5efef; #ff9a9e; #fad0c4; #fbc2eb"
+              dur="8s"
+              repeatCount="indefinite"
+            />
+          </stop>
+        </linearGradient>
 
         {/* Improved rainbow container background */}
         <linearGradient id="improved-rainbow" x1="0%" y1="0%" x2="100%" y2="0%">

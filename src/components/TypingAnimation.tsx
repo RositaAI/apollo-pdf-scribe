@@ -49,7 +49,6 @@ const TypingAnimation: React.FC<TypingAnimationProps> = ({
   const renderProcessedText = () => {
     let textSegments = [];
     let position = 0;
-    let charCount = 0;
 
     processedText.forEach((part) => {
       const partText = part.text;
@@ -72,7 +71,9 @@ const TypingAnimation: React.FC<TypingAnimationProps> = ({
           } else {
             // Calculate which characters should have the typing glow
             const chars = visibleText.split('').map((char, idx) => {
-              const isRecentlyTyped = currentIndex - partStart - 3 <= idx && idx < currentIndex - partStart + 1;
+              // Calculate if this character is recently typed (within last 3-4 chars)
+              const isRecentlyTyped = (currentIndex - partStart - idx) >= 0 && 
+                                     (currentIndex - partStart - idx) < 4;
               return (
                 <span 
                   key={`${part.id}-${idx}`} 
