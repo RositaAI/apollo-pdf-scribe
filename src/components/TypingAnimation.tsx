@@ -42,38 +42,40 @@ const TypingAnimation: React.FC<TypingAnimationProps> = ({
 
   // Render processed text with special styling for "Apollo"
   const renderProcessedText = () => {
-    const currentText = displayText;
-    return processedText.map(part => {
+    let result = [];
+    let currentPosition = 0;
+    
+    for (let i = 0; i < processedText.length; i++) {
+      const part = processedText[i];
       const partText = part.text;
-      const textIndex = text.indexOf(partText);
       
-      if (currentText.length > textIndex) {
-        // Calculate how much of this part should be visible
-        const visibleLength = Math.min(
-          partText.length,
-          currentText.length - textIndex
-        );
-        
-        if (visibleLength > 0) {
-          const visibleText = partText.slice(0, visibleLength);
-          
-          if (part.isApollo) {
-            return (
-              <span 
-                key={part.id} 
-                className="apollo-text"
-              >
-                {visibleText}
-              </span>
-            );
-          }
-          
-          return <span key={part.id}>{visibleText}</span>;
-        }
+      // Skip this part if we haven't reached it in the display text yet
+      if (currentPosition >= displayText.length) {
+        break;
       }
       
-      return null;
-    }).filter(Boolean);
+      // How much of this part should be visible
+      const remainingLength = displayText.length - currentPosition;
+      const visibleLength = Math.min(partText.length, remainingLength);
+      
+      if (visibleLength > 0) {
+        const visibleText = partText.slice(0, visibleLength);
+        
+        if (part.isApollo) {
+          result.push(
+            <span key={part.id} className="apollo-text">
+              {visibleText}
+            </span>
+          );
+        } else {
+          result.push(<span key={part.id}>{visibleText}</span>);
+        }
+        
+        currentPosition += visibleLength;
+      }
+    }
+    
+    return result;
   };
 
   return (
