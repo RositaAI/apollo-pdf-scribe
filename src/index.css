@@ -1,4 +1,3 @@
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -122,13 +121,16 @@
 
 @keyframes rainbowGlowRotate {
   0% {
-    transform: rotate(0deg) scale(0.3);
+    transform: rotate(0deg) scale(0.5);
+    opacity: 0.2;
   }
   50% {
-    transform: rotate(180deg) scale(0.3);
+    transform: rotate(180deg) scale(0.5);
+    opacity: 0.3;
   }
   100% {
-    transform: rotate(360deg) scale(0.3);
+    transform: rotate(360deg) scale(0.5);
+    opacity: 0.2;
   }
 }
 
@@ -151,7 +153,7 @@
   100% { background-position: 0% 50%; }
 }
 
-/* Apollo text styling */
+/* Apollo text styling - improved */
 .apollo-text {
   color: transparent;
   background: linear-gradient(270deg, #24cbde, #bd52f9, #1cc98c, #57a9f7, #ebb347);
@@ -169,10 +171,7 @@
   display: inline-block;
   overflow: hidden;
   white-space: nowrap;
-  width: 0;
-  animation: 
-    typing 3.5s steps(40, end) forwards,
-    blink-caret 0.75s step-end infinite;
+  line-height: 1.5;
 }
 
 /* Glowing caret for typing */
@@ -193,9 +192,10 @@
 
 .glow-text-container {
   width: 100%;
+  filter: url(#bloom-filter);
 }
 
-/* Rainbow glow container */
+/* Rainbow glow container - improved */
 .rainbow-glow {
   display: inline-block;
   padding: 2px;
@@ -216,7 +216,8 @@
   background-position: center center;
   background-image: conic-gradient(from 0 at 50% 50%, transparent 50%, #fff845, #1cc98c, #24cbde, #57a9f7, #bd52f9, #ebb347);
   animation: rainbowGlowRotate 4s linear infinite;
-  filter: blur(15px);
+  filter: blur(20px);
+  opacity: 0.4;
 }
 
 .rainbow-glow-light {
@@ -228,17 +229,17 @@
 .rainbow-glow-light::before {
   content: '';
   position: absolute;
-  top: -5px;
-  left: -5px;
-  right: -5px;
-  bottom: -5px;
+  top: -10px;
+  left: -10px;
+  right: -10px;
+  bottom: -10px;
   background: linear-gradient(45deg, #ff0000, #ff7300, #fffb00, #48ff00, #00ffd5, #002bff, #7a00ff, #ff00c8, #ff0000);
   background-size: 400% 400%;
-  animation: gradientFlow 10s ease infinite;
-  filter: blur(10px);
-  opacity: 0.3;
+  animation: gradientFlow 12s ease infinite;
+  filter: blur(15px);
+  opacity: 0.15;
   z-index: -1;
-  border-radius: 20px;
+  border-radius: 24px;
 }
 
 .card {

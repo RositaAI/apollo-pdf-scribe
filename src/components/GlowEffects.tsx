@@ -5,7 +5,7 @@ export const GlowFilters = () => {
   return (
     <svg xmlns="http://www.w3.org/2000/svg" width="0" height="0" style={{ position: 'absolute' }}>
       <defs>
-        {/* Bloom filter for text glow effect */}
+        {/* Enhanced bloom filter for text glow effect */}
         <filter
           id="bloom-filter"
           width="200%"
@@ -14,49 +14,19 @@ export const GlowFilters = () => {
           y="-50%"
         >
           <feComponentTransfer result="amplified">
-            <feFuncR type="linear" slope="0.7" intercept="0"></feFuncR>
-            <feFuncG type="linear" slope="0.7" intercept="0"></feFuncG>
-            <feFuncB type="linear" slope="0.7" intercept="0"></feFuncB>
-          </feComponentTransfer>
-          <feColorMatrix in="amplified" type="saturate" values="0" result="desaturated"></feColorMatrix>
-          <feComponentTransfer in="desaturated" result="thresholded">
-            <feFuncR type="table" tableValues="0,1"></feFuncR>
-            <feFuncG type="table" tableValues="0,1"></feFuncG>
-            <feFuncB type="table" tableValues="0,1"></feFuncB>
-          </feComponentTransfer>
-          <feColorMatrix
-            in="thresholded"
-            type="matrix"
-            values="1 0 0 0 0
-                    0 1 0 0 0
-                    0 0 1 0 0
-                    1 0 0 0 0"
-            result="alphaMask"
-          ></feColorMatrix>
-          <feComposite
-            in="SourceGraphic"
-            in2="alphaMask"
-            operator="arithmetic"
-            k1="1"
-            k2="0"
-            k3="0"
-            k4="0"
-            result="maskedSource"
-          ></feComposite>
-          <feComponentTransfer in="maskedSource" result="brightened">
-            <feFuncR type="linear" slope="1"></feFuncR>
-            <feFuncG type="linear" slope="1"></feFuncG>
-            <feFuncB type="linear" slope="1"></feFuncB>
+            <feFuncR type="linear" slope="1.2" intercept="0"></feFuncR>
+            <feFuncG type="linear" slope="1.2" intercept="0"></feFuncG>
+            <feFuncB type="linear" slope="1.2" intercept="0"></feFuncB>
           </feComponentTransfer>
           <feGaussianBlur
-            in="brightened"
-            stdDeviation="10"
+            in="amplified"
+            stdDeviation="8"
             edgeMode="none"
             result="blurredBloom"
           ></feGaussianBlur>
           <feGaussianBlur
-            in="brightened"
-            stdDeviation="4"
+            in="amplified"
+            stdDeviation="3"
             edgeMode="none"
             result="blurredBloom2"
           ></feGaussianBlur>
@@ -81,15 +51,15 @@ export const GlowFilters = () => {
           ></feComposite>
         </filter>
 
-        {/* Apollo name gradient glow filter */}
+        {/* Improved Apollo name gradient glow filter */}
         <filter id="apollo-glow" x="-50%" y="-50%" width="200%" height="200%">
-          <feGaussianBlur stdDeviation="6" result="blur" />
+          <feGaussianBlur stdDeviation="5" result="blur" />
           <feColorMatrix
             type="matrix"
             values="1 0 0 0 0
                     0 1 0 0 0
                     0 0 1 0 0
-                    0 0 0 20 -8"
+                    0 0 0 15 -6"
             result="glow"
           />
           <feComposite in="SourceGraphic" in2="glow" operator="over" />

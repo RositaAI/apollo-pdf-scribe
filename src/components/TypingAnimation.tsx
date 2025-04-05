@@ -29,7 +29,7 @@ const TypingAnimation: React.FC<TypingAnimationProps> = ({
   useEffect(() => {
     if (currentIndex < text.length) {
       const timeout = setTimeout(() => {
-        setDisplayText(prev => prev + text[currentIndex]);
+        setDisplayText(text.substring(0, currentIndex + 1));
         setCurrentIndex(prevIndex => prevIndex + 1);
       }, typingSpeed);
 
@@ -40,7 +40,7 @@ const TypingAnimation: React.FC<TypingAnimationProps> = ({
     }
   }, [currentIndex, text, typingSpeed, isComplete, onComplete]);
 
-  // Check if current typed text has "Apollo" in it
+  // Render the displayed parts with appropriate styling
   const displayedParts = () => {
     const currentText = displayText;
     return processedText.map(part => {

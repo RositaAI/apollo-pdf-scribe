@@ -87,7 +87,7 @@ const Chat = () => {
       
       const newAiMessageId = Date.now().toString();
       
-      // First add a placeholder message for typing animation
+      // Add message with typing indicator
       setMessages(prev => [...prev, {
         id: newAiMessageId,
         text: aiResponse,
@@ -98,19 +98,7 @@ const Chat = () => {
       
       setTypingMessageId(newAiMessageId);
       setIsLoading(false);
-      
-      // After typing animation completes, replace with regular message
-      setTimeout(() => {
-        setMessages(prev => 
-          prev.map(msg => 
-            msg.id === newAiMessageId 
-              ? { ...msg, isTyping: false } 
-              : msg
-          )
-        );
-        setTypingMessageId(null);
-      }, aiResponse.length * 30 + 1000); // Approximation of typing animation duration
-    }, 2000); // Simulate 2 second thinking time
+    }, 1500);
   };
 
   const handleSendMessage = () => {
@@ -135,6 +123,17 @@ const Chat = () => {
       e.preventDefault();
       handleSendMessage();
     }
+  };
+
+  const handleTypingComplete = (messageId: string) => {
+    setMessages(prev => 
+      prev.map(msg => 
+        msg.id === messageId 
+          ? { ...msg, isTyping: false } 
+          : msg
+      )
+    );
+    setTypingMessageId(null);
   };
 
   const formatTime = (date: Date) => {
@@ -185,11 +184,12 @@ const Chat = () => {
                 )}
               >
                 {message.isTyping ? (
-                  <div className="glow-text-container" style={{ filter: 'url(#bloom-filter)' }}>
+                  <div className="glow-text-container">
                     <TypingAnimation 
                       text={message.text}
                       typingSpeed={30}
                       hasGlow={true}
+                      onComplete={() => handleTypingComplete(message.id)}
                     />
                   </div>
                 ) : (
