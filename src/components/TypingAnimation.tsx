@@ -31,8 +31,25 @@ const TypingAnimation: React.FC<TypingAnimationProps> = ({
   }, [currentIndex, text, typingSpeed, isComplete, onComplete]);
 
   return (
-    <span className="typing-animation" style={{ width: 'auto' }}>
-      {displayText}
+    <span 
+      className="typing-animation relative inline-block"
+      style={{ 
+        width: 'auto',
+        filter: isComplete ? 'blur(0px)' : 'blur(0.4px)'
+      }}
+    >
+      <span className="relative">
+        {displayText}
+        {!isComplete && (
+          <span 
+            className="absolute right-0 top-0 h-full w-1 bg-blue-500" 
+            style={{
+              animation: 'blink-caret 0.75s step-end infinite',
+              opacity: 0.8
+            }}
+          ></span>
+        )}
+      </span>
     </span>
   );
 };

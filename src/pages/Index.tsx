@@ -1,11 +1,12 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Pen, Send } from 'lucide-react';
+import { FilePdf, Send } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import TypingAnimation from '@/components/TypingAnimation';
 import { useToast } from '@/components/ui/use-toast';
+import { Input } from '@/components/ui/input';
 
 const Index = () => {
   const [pdfUploaded, setPdfUploaded] = useState(false);
@@ -57,86 +58,93 @@ const Index = () => {
   };
 
   return (
-    <div className="flex h-screen bg-white">
-      {/* Tall sidebar */}
-      <div className="w-full max-w-2xl mx-auto h-full flex flex-col items-center justify-center relative bg-gradient-to-b from-[#1A1F2C] to-[#2C3347] shadow-2xl rounded-lg p-8">
-        <div className="absolute top-4 right-4 flex gap-3">
-          <Button 
-            variant="outline" 
-            size="icon" 
-            className="rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-lg transition-all duration-300"
-            onClick={() => fileInputRef.current?.click()}
-          >
-            <Pen className="h-5 w-5 text-white" />
-            <span className="sr-only">Upload PDF</span>
-          </Button>
-          
-          <Button
-            disabled={!pdfUploaded || !prompt.trim()}
-            className={cn(
-              "rounded-full transition-all duration-300",
-              !pdfUploaded || !prompt.trim() 
-                ? "bg-gray-400 cursor-not-allowed opacity-50" 
-                : "bg-blue-500 hover:bg-blue-600"
-            )}
-            onClick={handleSubmit}
-          >
-            <Send className="h-5 w-5 text-white" />
-            <span className="sr-only">Send</span>
-          </Button>
-        </div>
-
-        <div className="w-full flex flex-col items-center justify-center space-y-6 text-center">
-          <div className="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-gray-200 to-white mb-4">
+    <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-b from-white to-gray-50 p-4">
+      <div className="w-full max-w-4xl mx-auto relative animate-fade-in backdrop-blur-md">
+        {/* Header with Welcome Message */}
+        <div className="text-center mb-12">
+          <h1 className="text-4xl font-bold text-gray-800 mb-4">
             <TypingAnimation 
               text="Hello, I am Apollo." 
+              typingSpeed={70}
               onComplete={() => setTimeout(handleTypingComplete, 500)}
             />
-          </div>
+          </h1>
           
           {isTypingComplete && (
-            <div className="fade-in text-xl text-gray-300 max-w-md">
+            <p className="text-xl text-gray-600 max-w-xl mx-auto mt-4 animate-fade-in">
               Please upload a PDF and let's chat about it.
-            </div>
+            </p>
           )}
-
-          {pdfUploaded && (
-            <div className="w-full max-w-md fade-in mt-8">
-              <div className="bg-white/10 backdrop-blur-lg rounded-lg p-3 mb-4">
-                <p className="text-gray-200 text-sm truncate">
-                  <span className="font-semibold">Uploaded:</span> {pdfName}
-                </p>
-              </div>
-              <div className="mt-4 relative">
-                <textarea
-                  className="w-full p-4 pr-12 rounded-lg bg-white/10 text-white placeholder-gray-400 backdrop-blur-lg border border-white/20 focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none h-24"
-                  placeholder="What would you like to know about this PDF?"
-                  value={prompt}
-                  onChange={(e) => setPrompt(e.target.value)}
-                  disabled={!pdfUploaded}
-                />
-                <button
-                  className={cn(
-                    "absolute right-3 bottom-3 p-2 rounded-full transition-all duration-200",
-                    prompt.trim() ? "bg-blue-500 hover:bg-blue-600" : "bg-gray-400 cursor-not-allowed"
-                  )}
-                  disabled={!prompt.trim()}
-                  onClick={handleSubmit}
-                >
-                  <Send className="h-5 w-5 text-white" />
-                </button>
-              </div>
-            </div>
-          )}
-
-          <input
-            type="file"
-            accept=".pdf"
-            className="hidden"
-            ref={fileInputRef}
-            onChange={handleFileUpload}
-          />
         </div>
+
+        {/* Wide Input Container */}
+        <div className="w-full bg-white rounded-xl shadow-lg p-6 transition-all duration-300 backdrop-blur-lg">
+          {pdfUploaded && (
+            <div className="bg-blue-50 rounded-lg p-3 mb-6 animate-fade-in flex items-center">
+              <FilePdf className="h-5 w-5 text-blue-500 mr-2" />
+              <p className="text-gray-700 text-sm truncate">
+                <span className="font-semibold">Uploaded:</span> {pdfName}
+              </p>
+            </div>
+          )}
+
+          <div className="flex items-center gap-3">
+            <div className="relative flex-1">
+              <Input
+                className={cn(
+                  "w-full py-6 px-4 pr-12 rounded-lg border-2 transition-all duration-300",
+                  pdfUploaded 
+                    ? "border-blue-200 focus:border-blue-400 bg-white" 
+                    : "border-gray-200 bg-gray-50 cursor-not-allowed"
+                )}
+                placeholder={pdfUploaded ? "What would you like to know about this PDF?" : "Upload a PDF to continue..."}
+                value={prompt}
+                onChange={(e) => setPrompt(e.target.value)}
+                disabled={!pdfUploaded}
+              />
+            </div>
+            
+            <Button 
+              variant="outline" 
+              size="icon" 
+              className="h-12 w-12 rounded-full bg-gray-100 hover:bg-gray-200 transition-all duration-300"
+              onClick={() => fileInputRef.current?.click()}
+            >
+              <FilePdf className="h-5 w-5 text-gray-700" />
+              <span className="sr-only">Upload PDF</span>
+            </Button>
+            
+            <Button
+              size="icon"
+              disabled={!pdfUploaded || !prompt.trim()}
+              className={cn(
+                "h-12 w-12 rounded-full transition-all duration-300",
+                !pdfUploaded || !prompt.trim() 
+                  ? "bg-gray-300 cursor-not-allowed" 
+                  : "bg-blue-500 hover:bg-blue-600 shadow-md hover:shadow-lg"
+              )}
+              onClick={handleSubmit}
+            >
+              <Send className="h-5 w-5 text-white" />
+              <span className="sr-only">Send</span>
+            </Button>
+          </div>
+        </div>
+
+        {/* Instructions */}
+        {isTypingComplete && (
+          <div className="mt-8 text-center text-gray-500 text-sm animate-fade-in">
+            <p>Upload your PDF using the document icon, then ask a question.</p>
+          </div>
+        )}
+
+        <input
+          type="file"
+          accept=".pdf"
+          className="hidden"
+          ref={fileInputRef}
+          onChange={handleFileUpload}
+        />
       </div>
     </div>
   );
