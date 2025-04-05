@@ -109,7 +109,7 @@
   50% { opacity: 1; }
 }
 
-/* Rainbow gradient animations */
+/* Rainbow gradient animations with improved realism */
 @keyframes rainbowRotate {
   0% {
     transform: rotate(0deg);
@@ -122,28 +122,49 @@
 @keyframes rainbowGlowRotate {
   0% {
     transform: rotate(0deg) scale(0.5);
-    opacity: 0.2;
+    opacity: 0.15;
   }
   50% {
-    transform: rotate(180deg) scale(0.5);
-    opacity: 0.3;
+    transform: rotate(180deg) scale(0.6);
+    opacity: 0.25;
   }
   100% {
     transform: rotate(360deg) scale(0.5);
-    opacity: 0.2;
+    opacity: 0.15;
   }
 }
 
-/* Text glow animation */
+/* Text glow animation with improved SFG-like effect */
 @keyframes textGlow {
   0% {
-    text-shadow: 0 0 4px rgba(66, 153, 225, 0.5);
+    filter: drop-shadow(0 0 2px rgba(14, 165, 233, 0.6));
   }
   50% {
-    text-shadow: 0 0 10px rgba(66, 153, 225, 0.8), 0 0 20px rgba(66, 153, 225, 0.5);
+    filter: drop-shadow(0 0 5px rgba(14, 165, 233, 0.9)) drop-shadow(0 0 10px rgba(14, 165, 233, 0.6));
   }
   100% {
-    text-shadow: 0 0 4px rgba(66, 153, 225, 0.5);
+    filter: drop-shadow(0 0 2px rgba(14, 165, 233, 0.6));
+  }
+}
+
+/* Glow follow typing and fade out */
+@keyframes glowFollowTyping {
+  0% {
+    text-shadow: 0 0 4px rgba(14, 165, 233, 0.3), 0 0 8px rgba(14, 165, 233, 0.3);
+  }
+  100% {
+    text-shadow: 0 0 8px rgba(14, 165, 233, 0.6), 0 0 16px rgba(14, 165, 233, 0.4);
+  }
+}
+
+@keyframes glowFadeOut {
+  0% {
+    text-shadow: 0 0 8px rgba(14, 165, 233, 0.6), 0 0 16px rgba(14, 165, 233, 0.4);
+    filter: brightness(1.2);
+  }
+  100% {
+    text-shadow: none;
+    filter: brightness(1);
   }
 }
 
@@ -153,11 +174,11 @@
   100% { background-position: 0% 50%; }
 }
 
-/* Apollo text styling - improved */
+/* Apollo text styling - improved with SFG-like blue glow */
 .apollo-text {
   color: transparent;
   background: linear-gradient(270deg, #24cbde, #bd52f9, #1cc98c, #57a9f7, #ebb347);
-  background-size: 400% 400%;
+  background-size: 300% 300%;
   background-clip: text;
   -webkit-background-clip: text;
   filter: url(#apollo-glow);
@@ -166,18 +187,23 @@
   position: relative;
 }
 
-/* Typing animation styling */
+/* Typing animation styling with improved glow */
 .typing-animation {
   display: inline-block;
   overflow: hidden;
   white-space: nowrap;
   line-height: 1.5;
+  animation: glowFollowTyping 1.5s ease-in-out infinite alternate;
 }
 
-/* Glowing caret for typing */
+.glow-fade-out {
+  animation: glowFadeOut 1.5s ease-out forwards;
+}
+
+/* Glowing caret for typing with improved glow */
 .glowing-caret {
-  background: linear-gradient(to right, #24cbde, #bd52f9);
-  box-shadow: 0 0 8px rgba(66, 153, 225, 0.8), 0 0 16px rgba(66, 153, 225, 0.6);
+  background: linear-gradient(to right, #24cbde, #0EA5E9);
+  box-shadow: 0 0 8px rgba(14, 165, 233, 0.8), 0 0 16px rgba(14, 165, 233, 0.6);
   animation: pulse 1s infinite;
 }
 
@@ -192,16 +218,17 @@
 
 .glow-text-container {
   width: 100%;
-  filter: url(#bloom-filter);
+  filter: url(#typing-glow);
 }
 
-/* Rainbow glow container - improved */
+/* Improved rainbow glow container with better realism */
 .rainbow-glow {
   display: inline-block;
   padding: 2px;
   position: relative;
   border-radius: 25px;
   overflow: hidden;
+  z-index: 0;
 }
 
 .rainbow-glow::before {
@@ -213,11 +240,13 @@
   right: -50%;
   bottom: -50%;
   top: -50%;
+  left: -50%;
   background-position: center center;
   background-image: conic-gradient(from 0 at 50% 50%, transparent 50%, #fff845, #1cc98c, #24cbde, #57a9f7, #bd52f9, #ebb347);
-  animation: rainbowGlowRotate 4s linear infinite;
-  filter: blur(20px);
-  opacity: 0.4;
+  animation: rainbowGlowRotate 8s ease-in-out infinite;
+  filter: blur(25px);
+  opacity: 0.25;
+  z-index: -1;
 }
 
 .rainbow-glow-light {
@@ -229,15 +258,15 @@
 .rainbow-glow-light::before {
   content: '';
   position: absolute;
-  top: -10px;
-  left: -10px;
-  right: -10px;
-  bottom: -10px;
-  background: linear-gradient(45deg, #ff0000, #ff7300, #fffb00, #48ff00, #00ffd5, #002bff, #7a00ff, #ff00c8, #ff0000);
+  top: -20px;
+  left: -20px;
+  right: -20px;
+  bottom: -20px;
+  background: linear-gradient(45deg, rgba(255,0,0,0.1), rgba(255,115,0,0.1), rgba(255,251,0,0.1), rgba(72,255,0,0.1), rgba(0,255,213,0.1), rgba(0,43,255,0.1), rgba(122,0,255,0.1), rgba(255,0,200,0.1), rgba(255,0,0,0.1));
   background-size: 400% 400%;
-  animation: gradientFlow 12s ease infinite;
-  filter: blur(15px);
-  opacity: 0.15;
+  animation: gradientFlow 15s ease infinite;
+  filter: blur(20px);
+  opacity: 0.2;
   z-index: -1;
   border-radius: 24px;
 }
@@ -295,6 +324,23 @@
 
 .ai-message {
   @apply bg-[hsl(var(--ai-message))] text-gray-800 self-start;
+}
+
+.ai-message.is-typing {
+  position: relative;
+  overflow: hidden;
+}
+
+.ai-message.is-typing::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 4px;
+  height: 100%;
+  background: linear-gradient(to bottom, transparent, #0EA5E9, transparent);
+  animation: pulse 1.5s infinite;
+  filter: blur(2px);
 }
 
 .typing-indicator {

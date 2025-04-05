@@ -5,81 +5,97 @@ export const GlowFilters = () => {
   return (
     <svg xmlns="http://www.w3.org/2000/svg" width="0" height="0" style={{ position: 'absolute' }}>
       <defs>
-        {/* Enhanced bloom filter for text glow effect */}
+        {/* Enhanced SFG-like bloom filter for text glow effect */}
         <filter
           id="bloom-filter"
-          width="200%"
-          height="200%"
           x="-50%"
           y="-50%"
+          width="200%"
+          height="200%"
         >
-          <feComponentTransfer result="amplified">
-            <feFuncR type="linear" slope="1.2" intercept="0"></feFuncR>
-            <feFuncG type="linear" slope="1.2" intercept="0"></feFuncG>
-            <feFuncB type="linear" slope="1.2" intercept="0"></feFuncB>
-          </feComponentTransfer>
-          <feGaussianBlur
-            in="amplified"
-            stdDeviation="8"
-            edgeMode="none"
-            result="blurredBloom"
-          ></feGaussianBlur>
-          <feGaussianBlur
-            in="amplified"
-            stdDeviation="3"
-            edgeMode="none"
-            result="blurredBloom2"
-          ></feGaussianBlur>
-          <feComposite
-            in="SourceGraphic"
-            in2="blurredBloom"
-            operator="arithmetic"
-            k1="0"
-            k2="1"
-            k3="1"
-            k4="0"
-            result="finalBloom"
-          ></feComposite>
-          <feComposite
-            in="finalBloom"
-            in2="blurredBloom2"
-            operator="arithmetic"
-            k1="0"
-            k2="1"
-            k3="1"
-            k4="0"
-          ></feComposite>
-        </filter>
-
-        {/* Improved Apollo name gradient glow filter */}
-        <filter id="apollo-glow" x="-50%" y="-50%" width="200%" height="200%">
-          <feGaussianBlur stdDeviation="5" result="blur" />
-          <feColorMatrix
-            type="matrix"
-            values="1 0 0 0 0
-                    0 1 0 0 0
-                    0 0 1 0 0
-                    0 0 0 15 -6"
-            result="glow"
+          <feGaussianBlur 
+            stdDeviation="2" 
+            result="blur1" 
           />
-          <feComposite in="SourceGraphic" in2="glow" operator="over" />
+          <feFlood 
+            floodColor="#0EA5E9" 
+            floodOpacity="0.3" 
+            result="color" 
+          />
+          <feComposite 
+            in="color" 
+            in2="blur1" 
+            operator="in" 
+            result="coloredBlur" 
+          />
+          <feGaussianBlur 
+            in="coloredBlur" 
+            stdDeviation="4" 
+            result="blurredColor" 
+          />
+          <feComponentTransfer in="blurredColor" result="brightenedBlur">
+            <feFuncR type="linear" slope="2.5" />
+            <feFuncG type="linear" slope="2.5" />
+            <feFuncB type="linear" slope="2.5" />
+          </feComponentTransfer>
+          <feMerge>
+            <feMergeNode in="brightenedBlur" />
+            <feMergeNode in="SourceGraphic" />
+          </feMerge>
         </filter>
 
-        {/* Gradient definition for Apollo text */}
-        <linearGradient id="apollo-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+        {/* Improved Apollo name SFG-like blue glow filter */}
+        <filter id="apollo-glow" x="-50%" y="-50%" width="200%" height="200%">
+          <feGaussianBlur stdDeviation="2" result="blur" />
+          <feFlood floodColor="#0EA5E9" floodOpacity="0.7" result="glowColor"/>
+          <feComposite in="glowColor" in2="blur" operator="in" result="softGlow"/>
+          <feGaussianBlur in="softGlow" stdDeviation="3" result="expandedGlow"/>
+          <feComponentTransfer in="expandedGlow" result="brightGlow">
+            <feFuncR type="linear" slope="3" />
+            <feFuncG type="linear" slope="3" />
+            <feFuncB type="linear" slope="3" />
+          </feComponentTransfer>
+          <feMerge>
+            <feMergeNode in="brightGlow" />
+            <feMergeNode in="SourceGraphic" />
+          </feMerge>
+        </filter>
+
+        {/* Typing glow filter that follows the cursor */}
+        <filter id="typing-glow" x="-50%" y="-50%" width="200%" height="200%">
+          <feGaussianBlur stdDeviation="1.5" result="blur" />
+          <feFlood floodColor="#3b82f6" floodOpacity="0.6" result="glowColor"/>
+          <feComposite in="glowColor" in2="blur" operator="in" result="softGlow"/>
+          <feGaussianBlur in="softGlow" stdDeviation="2" result="expandedGlow"/>
+          <feMerge>
+            <feMergeNode in="expandedGlow" />
+            <feMergeNode in="SourceGraphic" />
+          </feMerge>
+        </filter>
+
+        {/* Rainbow container background with improved realism */}
+        <linearGradient id="improved-rainbow" x1="0%" y1="0%" x2="100%" y2="0%">
           <stop offset="0%" stopColor="#24cbde">
             <animate
               attributeName="stopColor"
               values="#24cbde; #bd52f9; #1cc98c; #57a9f7; #ebb347; #24cbde"
-              dur="4s"
+              dur="8s"
               repeatCount="indefinite"
             />
           </stop>
-          <stop offset="100%" stopColor="#bd52f9">
+          <stop offset="50%" stopColor="#bd52f9">
             <animate
               attributeName="stopColor"
               values="#bd52f9; #1cc98c; #57a9f7; #ebb347; #24cbde; #bd52f9"
-              dur="4s"
+              dur="8s"
+              repeatCount="indefinite"
+            />
+          </stop>
+          <stop offset="100%" stopColor="#1cc98c">
+            <animate
+              attributeName="stopColor"
+              values="#1cc98c; #57a9f7; #ebb347; #24cbde; #bd52f9; #1cc98c"
+              dur="8s"
               repeatCount="indefinite"
             />
           </stop>

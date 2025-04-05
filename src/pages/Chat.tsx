@@ -180,7 +180,11 @@ const Chat = () => {
               <div
                 className={cn(
                   "message-bubble",
-                  message.sender === 'user' ? 'user-message' : 'ai-message'
+                  message.sender === 'user' 
+                    ? 'user-message' 
+                    : message.isTyping 
+                      ? 'ai-message is-typing' 
+                      : 'ai-message'
                 )}
               >
                 {message.isTyping ? (

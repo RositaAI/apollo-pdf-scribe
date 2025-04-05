@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 
 interface TypingAnimationProps {
@@ -17,6 +16,7 @@ const TypingAnimation: React.FC<TypingAnimationProps> = ({
   const [displayText, setDisplayText] = useState('');
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isComplete, setIsComplete] = useState(false);
+  const [fadeOutGlow, setFadeOutGlow] = useState(false);
 
   // Parse the text to identify "Apollo" occurrences
   const processedText = text.split(/(Apollo)/gi).map((part, index) => {
@@ -36,54 +36,52 @@ const TypingAnimation: React.FC<TypingAnimationProps> = ({
       return () => clearTimeout(timeout);
     } else if (!isComplete) {
       setIsComplete(true);
+      setTimeout(() => setFadeOutGlow(true), 500);
       onComplete && onComplete();
     }
   }, [currentIndex, text, typingSpeed, isComplete, onComplete]);
 
   // Render processed text with special styling for "Apollo"
   const renderProcessedText = () => {
-    let result = [];
-    let currentPosition = 0;
-    
-    for (let i = 0; i < processedText.length; i++) {
-      const part = processedText[i];
+    let textSegments = [];
+    let position = 0;
+
+    processedText.forEach((part) => {
       const partText = part.text;
       
-      // Skip this part if we haven't reached it in the display text yet
-      if (currentPosition >= displayText.length) {
-        break;
-      }
+      const partStart = text.indexOf(partText, position);
+      const partEnd = partStart + partText.length;
       
-      // How much of this part should be visible
-      const remainingLength = displayText.length - currentPosition;
-      const visibleLength = Math.min(partText.length, remainingLength);
-      
-      if (visibleLength > 0) {
-        const visibleText = partText.slice(0, visibleLength);
+      if (currentIndex >= partStart) {
+        const charsTyped = Math.min(currentIndex - partStart + 1, partText.length);
         
-        if (part.isApollo) {
-          result.push(
-            <span key={part.id} className="apollo-text">
-              {visibleText}
-            </span>
-          );
-        } else {
-          result.push(<span key={part.id}>{visibleText}</span>);
+        const visibleText = partText.substring(0, charsTyped);
+        
+        if (visibleText.length > 0) {
+          if (part.isApollo) {
+            textSegments.push(
+              <span key={part.id} className="apollo-text">
+                {visibleText}
+              </span>
+            );
+          } else {
+            textSegments.push(<span key={part.id}>{visibleText}</span>);
+          }
         }
-        
-        currentPosition += visibleLength;
       }
-    }
-    
-    return result;
+      
+      position = Math.max(position, partEnd);
+    });
+
+    return textSegments;
   };
 
   return (
     <span 
-      className={`typing-animation relative inline-block ${hasGlow ? 'glow-typing' : ''}`}
+      className={`typing-animation relative inline-block ${hasGlow ? 'glow-typing' : ''} ${fadeOutGlow ? 'glow-fade-out' : ''}`}
       style={{ 
         width: 'auto',
-        filter: isComplete ? 'blur(0px)' : 'blur(0.4px)'
+        filter: isComplete && !hasGlow ? 'blur(0px)' : 'blur(0px)'
       }}
     >
       <span className="relative">
