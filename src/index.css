@@ -88,7 +88,7 @@
 
 @keyframes blink-caret {
   from, to { border-color: transparent }
-  50% { border-color: rgba(26, 31, 44, 0.7) }
+  50% { border-color: rgba(255, 255, 255, 0.9) }
 }
 
 @keyframes fadeIn {
@@ -134,32 +134,32 @@
   }
 }
 
-/* Text glow animation with improved SFG-like effect */
+/* Text glow animation with improved SVG-like effect */
 @keyframes textGlow {
   0% {
-    filter: drop-shadow(0 0 2px rgba(14, 165, 233, 0.6));
+    filter: drop-shadow(0 0 2px rgba(255, 255, 255, 0.6));
   }
   50% {
-    filter: drop-shadow(0 0 5px rgba(14, 165, 233, 0.9)) drop-shadow(0 0 10px rgba(14, 165, 233, 0.6));
+    filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.9)) drop-shadow(0 0 10px rgba(255, 255, 255, 0.6));
   }
   100% {
-    filter: drop-shadow(0 0 2px rgba(14, 165, 233, 0.6));
+    filter: drop-shadow(0 0 2px rgba(255, 255, 255, 0.6));
   }
 }
 
 /* Glow follow typing and fade out */
 @keyframes glowFollowTyping {
   0% {
-    text-shadow: 0 0 4px rgba(14, 165, 233, 0.3), 0 0 8px rgba(14, 165, 233, 0.3);
+    text-shadow: 0 0 4px rgba(255, 255, 255, 0.3), 0 0 8px rgba(255, 255, 255, 0.3);
   }
   100% {
-    text-shadow: 0 0 8px rgba(14, 165, 233, 0.6), 0 0 16px rgba(14, 165, 233, 0.4);
+    text-shadow: 0 0 8px rgba(255, 255, 255, 0.7), 0 0 16px rgba(255, 255, 255, 0.5);
   }
 }
 
 @keyframes glowFadeOut {
   0% {
-    text-shadow: 0 0 8px rgba(14, 165, 233, 0.6), 0 0 16px rgba(14, 165, 233, 0.4);
+    text-shadow: 0 0 8px rgba(255, 255, 255, 0.7), 0 0 16px rgba(255, 255, 255, 0.5);
     filter: brightness(1.2);
   }
   100% {
@@ -174,10 +174,10 @@
   100% { background-position: 0% 50%; }
 }
 
-/* Apollo text styling - improved with SFG-like blue glow */
+/* Apollo text styling - improved with SVG-like white glow */
 .apollo-text {
   color: transparent;
-  background: linear-gradient(270deg, #24cbde, #bd52f9, #1cc98c, #57a9f7, #ebb347);
+  background: linear-gradient(270deg, #ffffff, #f8f9fa, #e9ecef, #dee2e6, #ced4da);
   background-size: 300% 300%;
   background-clip: text;
   -webkit-background-clip: text;
@@ -202,18 +202,18 @@
 
 /* Glowing caret for typing with improved glow */
 .glowing-caret {
-  background: linear-gradient(to right, #24cbde, #0EA5E9);
-  box-shadow: 0 0 8px rgba(14, 165, 233, 0.8), 0 0 16px rgba(14, 165, 233, 0.6);
+  background: linear-gradient(to right, #ffffff, #f8f9fa);
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.8), 0 0 16px rgba(255, 255, 255, 0.6);
   animation: pulse 1s infinite;
 }
 
 .glow-typing {
-  filter: url(#bloom-filter);
+  filter: url(#white-glow);
 }
 
 .glow-text {
-  color: #3b82f6;
-  text-shadow: 0 0 8px rgba(59, 130, 246, 0.6);
+  color: #ffffff;
+  text-shadow: 0 0 8px rgba(255, 255, 255, 0.8);
 }
 
 .glow-text-container {

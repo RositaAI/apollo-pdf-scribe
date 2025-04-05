@@ -5,9 +5,9 @@ export const GlowFilters = () => {
   return (
     <svg xmlns="http://www.w3.org/2000/svg" width="0" height="0" style={{ position: 'absolute' }}>
       <defs>
-        {/* Enhanced SFG-like bloom filter for text glow effect */}
+        {/* Clean white SVG filter for text glow effect */}
         <filter
-          id="bloom-filter"
+          id="white-glow"
           x="-50%"
           y="-50%"
           width="200%"
@@ -18,8 +18,8 @@ export const GlowFilters = () => {
             result="blur1" 
           />
           <feFlood 
-            floodColor="#0EA5E9" 
-            floodOpacity="0.3" 
+            floodColor="#ffffff" 
+            floodOpacity="0.7" 
             result="color" 
           />
           <feComposite 
@@ -30,13 +30,13 @@ export const GlowFilters = () => {
           />
           <feGaussianBlur 
             in="coloredBlur" 
-            stdDeviation="4" 
+            stdDeviation="3" 
             result="blurredColor" 
           />
           <feComponentTransfer in="blurredColor" result="brightenedBlur">
-            <feFuncR type="linear" slope="2.5" />
-            <feFuncG type="linear" slope="2.5" />
-            <feFuncB type="linear" slope="2.5" />
+            <feFuncR type="linear" slope="1.5" />
+            <feFuncG type="linear" slope="1.5" />
+            <feFuncB type="linear" slope="1.5" />
           </feComponentTransfer>
           <feMerge>
             <feMergeNode in="brightenedBlur" />
@@ -44,16 +44,16 @@ export const GlowFilters = () => {
           </feMerge>
         </filter>
 
-        {/* Improved Apollo name SFG-like blue glow filter */}
+        {/* Improved Apollo name SVG-based white glow filter */}
         <filter id="apollo-glow" x="-50%" y="-50%" width="200%" height="200%">
           <feGaussianBlur stdDeviation="2" result="blur" />
-          <feFlood floodColor="#0EA5E9" floodOpacity="0.7" result="glowColor"/>
+          <feFlood floodColor="#ffffff" floodOpacity="0.8" result="glowColor"/>
           <feComposite in="glowColor" in2="blur" operator="in" result="softGlow"/>
-          <feGaussianBlur in="softGlow" stdDeviation="3" result="expandedGlow"/>
+          <feGaussianBlur in="softGlow" stdDeviation="4" result="expandedGlow"/>
           <feComponentTransfer in="expandedGlow" result="brightGlow">
-            <feFuncR type="linear" slope="3" />
-            <feFuncG type="linear" slope="3" />
-            <feFuncB type="linear" slope="3" />
+            <feFuncR type="linear" slope="2" />
+            <feFuncG type="linear" slope="2" />
+            <feFuncB type="linear" slope="2" />
           </feComponentTransfer>
           <feMerge>
             <feMergeNode in="brightGlow" />
@@ -61,41 +61,41 @@ export const GlowFilters = () => {
           </feMerge>
         </filter>
 
-        {/* Typing glow filter that follows the cursor */}
+        {/* Typing caret glow filter with white hue */}
         <filter id="typing-glow" x="-50%" y="-50%" width="200%" height="200%">
-          <feGaussianBlur stdDeviation="1.5" result="blur" />
-          <feFlood floodColor="#3b82f6" floodOpacity="0.6" result="glowColor"/>
+          <feGaussianBlur stdDeviation="2" result="blur" />
+          <feFlood floodColor="#ffffff" floodOpacity="0.9" result="glowColor"/>
           <feComposite in="glowColor" in2="blur" operator="in" result="softGlow"/>
-          <feGaussianBlur in="softGlow" stdDeviation="2" result="expandedGlow"/>
+          <feGaussianBlur in="softGlow" stdDeviation="3" result="expandedGlow"/>
           <feMerge>
             <feMergeNode in="expandedGlow" />
             <feMergeNode in="SourceGraphic" />
           </feMerge>
         </filter>
 
-        {/* Rainbow container background with improved realism */}
+        {/* Improved rainbow container background */}
         <linearGradient id="improved-rainbow" x1="0%" y1="0%" x2="100%" y2="0%">
-          <stop offset="0%" stopColor="#24cbde">
+          <stop offset="0%" stopColor="#f8f9fa">
             <animate
               attributeName="stopColor"
-              values="#24cbde; #bd52f9; #1cc98c; #57a9f7; #ebb347; #24cbde"
-              dur="8s"
+              values="#f8f9fa; #e9ecef; #dee2e6; #ced4da; #f8f9fa"
+              dur="10s"
               repeatCount="indefinite"
             />
           </stop>
-          <stop offset="50%" stopColor="#bd52f9">
+          <stop offset="50%" stopColor="#e9ecef">
             <animate
               attributeName="stopColor"
-              values="#bd52f9; #1cc98c; #57a9f7; #ebb347; #24cbde; #bd52f9"
-              dur="8s"
+              values="#e9ecef; #dee2e6; #ced4da; #f8f9fa; #e9ecef"
+              dur="10s"
               repeatCount="indefinite"
             />
           </stop>
-          <stop offset="100%" stopColor="#1cc98c">
+          <stop offset="100%" stopColor="#dee2e6">
             <animate
               attributeName="stopColor"
-              values="#1cc98c; #57a9f7; #ebb347; #24cbde; #bd52f9; #1cc98c"
-              dur="8s"
+              values="#dee2e6; #ced4da; #f8f9fa; #e9ecef; #dee2e6"
+              dur="10s"
               repeatCount="indefinite"
             />
           </stop>

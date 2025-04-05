@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 
 interface TypingAnimationProps {
@@ -36,7 +37,7 @@ const TypingAnimation: React.FC<TypingAnimationProps> = ({
       return () => clearTimeout(timeout);
     } else if (!isComplete) {
       setIsComplete(true);
-      setTimeout(() => setFadeOutGlow(true), 500);
+      setTimeout(() => setFadeOutGlow(true), 1000);
       onComplete && onComplete();
     }
   }, [currentIndex, text, typingSpeed, isComplete, onComplete]);
@@ -79,21 +80,16 @@ const TypingAnimation: React.FC<TypingAnimationProps> = ({
   return (
     <span 
       className={`typing-animation relative inline-block ${hasGlow ? 'glow-typing' : ''} ${fadeOutGlow ? 'glow-fade-out' : ''}`}
-      style={{ 
-        width: 'auto',
-        filter: isComplete && !hasGlow ? 'blur(0px)' : 'blur(0px)'
-      }}
     >
       <span className="relative">
-        {hasGlow ? renderProcessedText() : displayText}
+        {renderProcessedText()}
         {!isComplete && (
           <span 
             className={`absolute right-0 top-0 h-full w-1 ${
-              hasGlow ? 'glowing-caret' : 'bg-blue-500'
+              hasGlow ? 'glowing-caret' : 'bg-gray-300'
             }`} 
             style={{
               animation: 'blink-caret 0.75s step-end infinite',
-              opacity: 0.8
             }}
           ></span>
         )}
