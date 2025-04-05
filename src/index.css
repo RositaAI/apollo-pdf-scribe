@@ -81,6 +81,7 @@
   }
 }
 
+/* Original animations */
 @keyframes typing {
   from { width: 0 }
   to { width: 100% }
@@ -109,15 +110,174 @@
   50% { opacity: 1; }
 }
 
+/* Rainbow gradient animations */
+@keyframes rainbowRotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes rainbowGlowRotate {
+  0% {
+    transform: rotate(0deg) scale(0.3);
+  }
+  50% {
+    transform: rotate(180deg) scale(0.3);
+  }
+  100% {
+    transform: rotate(360deg) scale(0.3);
+  }
+}
+
+/* Text glow animation */
+@keyframes textGlow {
+  0% {
+    text-shadow: 0 0 4px rgba(66, 153, 225, 0.5);
+  }
+  50% {
+    text-shadow: 0 0 10px rgba(66, 153, 225, 0.8), 0 0 20px rgba(66, 153, 225, 0.5);
+  }
+  100% {
+    text-shadow: 0 0 4px rgba(66, 153, 225, 0.5);
+  }
+}
+
+@keyframes gradientFlow {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Apollo text styling */
+.apollo-text {
+  color: transparent;
+  background: linear-gradient(270deg, #24cbde, #bd52f9, #1cc98c, #57a9f7, #ebb347);
+  background-size: 400% 400%;
+  background-clip: text;
+  -webkit-background-clip: text;
+  filter: url(#apollo-glow);
+  animation: gradientFlow 6s ease infinite;
+  font-weight: bold;
+  position: relative;
+}
+
+/* Typing animation styling */
 .typing-animation {
   display: inline-block;
   overflow: hidden;
   white-space: nowrap;
-  border-right: 3px solid;
   width: 0;
   animation: 
     typing 3.5s steps(40, end) forwards,
     blink-caret 0.75s step-end infinite;
+}
+
+/* Glowing caret for typing */
+.glowing-caret {
+  background: linear-gradient(to right, #24cbde, #bd52f9);
+  box-shadow: 0 0 8px rgba(66, 153, 225, 0.8), 0 0 16px rgba(66, 153, 225, 0.6);
+  animation: pulse 1s infinite;
+}
+
+.glow-typing {
+  filter: url(#bloom-filter);
+}
+
+.glow-text {
+  color: #3b82f6;
+  text-shadow: 0 0 8px rgba(59, 130, 246, 0.6);
+}
+
+.glow-text-container {
+  width: 100%;
+}
+
+/* Rainbow glow container */
+.rainbow-glow {
+  display: inline-block;
+  padding: 2px;
+  position: relative;
+  border-radius: 25px;
+  overflow: hidden;
+}
+
+.rainbow-glow::before {
+  content: '';
+  display: block;
+  position: absolute;
+  width: 200%;
+  height: 200%;
+  right: -50%;
+  bottom: -50%;
+  top: -50%;
+  background-position: center center;
+  background-image: conic-gradient(from 0 at 50% 50%, transparent 50%, #fff845, #1cc98c, #24cbde, #57a9f7, #bd52f9, #ebb347);
+  animation: rainbowGlowRotate 4s linear infinite;
+  filter: blur(15px);
+}
+
+.rainbow-glow-light {
+  position: relative;
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.rainbow-glow-light::before {
+  content: '';
+  position: absolute;
+  top: -5px;
+  left: -5px;
+  right: -5px;
+  bottom: -5px;
+  background: linear-gradient(45deg, #ff0000, #ff7300, #fffb00, #48ff00, #00ffd5, #002bff, #7a00ff, #ff00c8, #ff0000);
+  background-size: 400% 400%;
+  animation: gradientFlow 10s ease infinite;
+  filter: blur(10px);
+  opacity: 0.3;
+  z-index: -1;
+  border-radius: 20px;
+}
+
+.card {
+  padding: 1px;
+  position: relative;
+  overflow: hidden;
+  border-radius: 25px;
+  box-shadow: inset 0 0 0 1px rgba(0,0,0,0.05);
+}
+
+.card::before {
+  content: '';
+  display: block;
+  position: absolute;
+  width: 200%;
+  right: -50%;
+  bottom: -50%;
+  top: -50%;
+  background-position: center center;
+  background-image: conic-gradient(from 0 at 50% 50%, transparent 50%, #fff845, #1cc98c, #24cbde, #57a9f7, #bd52f9, #ebb347);
+  animation: rainbowRotate 4s linear infinite;
+  opacity: 0.5;
+}
+
+.content {
+  background: white;
+  border-radius: 24px;
+  position: relative;
+  z-index: 1;
+}
+
+/* Glow button */
+.glow-button {
+  box-shadow: 0 0 12px rgba(66, 153, 225, 0.6);
+  transition: all 0.3s ease;
+}
+
+.glow-button:hover {
+  box-shadow: 0 0 16px rgba(66, 153, 225, 0.8), 0 0 28px rgba(66, 153, 225, 0.6);
 }
 
 .fade-in {
@@ -158,7 +318,7 @@
   -webkit-backdrop-filter: blur(10px);
 }
 
-/* New glass effect classes */
+/* Glass effect classes */
 .glass-container {
   background: rgba(255, 255, 255, 0.7);
   backdrop-filter: blur(10px);

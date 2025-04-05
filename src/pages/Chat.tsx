@@ -5,12 +5,15 @@ import { Send, ArrowLeft, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { useToast } from '@/components/ui/use-toast';
+import { GlowFilters } from '@/components/GlowEffects';
+import TypingAnimation from '@/components/TypingAnimation';
 
 interface Message {
   id: string;
   text: string;
   sender: 'user' | 'ai';
   timestamp: Date;
+  isTyping?: boolean;
 }
 
 const Chat = () => {
@@ -18,6 +21,7 @@ const Chat = () => {
   const [newMessage, setNewMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [pdfName, setPdfName] = useState('');
+  const [typingMessageId, setTypingMessageId] = useState<string | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const chatContainerRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
@@ -78,19 +82,35 @@ const Chat = () => {
       } else if (userMessage.toLowerCase().includes('author')) {
         aiResponse = `The author of ${pdfName} appears to be Dr. Jane Smith, based on the citations and references throughout the document. Dr. Smith is known for her work in this field with over 20 publications.`;
       } else {
-        aiResponse = `I've analyzed ${pdfName} and found information related to your question. The document contains detailed sections on this topic across pages 12-15, with specific references to supporting research. Would you like me to elaborate on any particular aspect?`;
+        aiResponse = `I've analyzed ${pdfName} and found information related to your question. The document contains detailed sections on this topic across pages 12-15, with specific references to supporting research by Apollo's research team. Would you like me to elaborate on any particular aspect?`;
       }
       
-      const newAiMessage: Message = {
-        id: Date.now().toString(),
+      const newAiMessageId = Date.now().toString();
+      
+      // First add a placeholder message for typing animation
+      setMessages(prev => [...prev, {
+        id: newAiMessageId,
         text: aiResponse,
         sender: 'ai',
         timestamp: new Date(),
-      };
+        isTyping: true
+      }]);
       
-      setMessages(prev => [...prev, newAiMessage]);
+      setTypingMessageId(newAiMessageId);
       setIsLoading(false);
-    }, 3000); // Simulate 3 second thinking time
+      
+      // After typing animation completes, replace with regular message
+      setTimeout(() => {
+        setMessages(prev => 
+          prev.map(msg => 
+            msg.id === newAiMessageId 
+              ? { ...msg, isTyping: false } 
+              : msg
+          )
+        );
+        setTypingMessageId(null);
+      }, aiResponse.length * 30 + 1000); // Approximation of typing animation duration
+    }, 2000); // Simulate 2 second thinking time
   };
 
   const handleSendMessage = () => {
@@ -123,6 +143,9 @@ const Chat = () => {
 
   return (
     <div className="flex flex-col h-screen bg-gray-50">
+      {/* Add SVG filters for glow effects */}
+      <GlowFilters />
+      
       {/* Header */}
       <header className="flex items-center px-4 py-3 bg-white shadow-sm z-10">
         <Button
@@ -134,7 +157,9 @@ const Chat = () => {
           <ArrowLeft className="h-5 w-5" />
         </Button>
         <div className="flex-1">
-          <h1 className="text-lg font-semibold">Apollo</h1>
+          <h1 className="text-lg font-semibold">
+            <span className="apollo-text">Apollo</span>
+          </h1>
           <p className="text-sm text-gray-500 truncate">PDF: {pdfName}</p>
         </div>
       </header>
@@ -159,7 +184,24 @@ const Chat = () => {
                   message.sender === 'user' ? 'user-message' : 'ai-message'
                 )}
               >
-                <div className="whitespace-pre-wrap">{message.text}</div>
+                {message.isTyping ? (
+                  <div className="glow-text-container" style={{ filter: 'url(#bloom-filter)' }}>
+                    <TypingAnimation 
+                      text={message.text}
+                      typingSpeed={30}
+                      hasGlow={true}
+                    />
+                  </div>
+                ) : (
+                  <div className="whitespace-pre-wrap">
+                    {message.text.split(/(Apollo)/gi).map((part, index) => {
+                      if (part.toLowerCase() === "apollo") {
+                        return <span key={index} className="apollo-text">{part}</span>;
+                      }
+                      return part;
+                    })}
+                  </div>
+                )}
               </div>
               <span className="text-xs text-gray-500 mt-1">
                 {formatTime(message.timestamp)}
@@ -182,9 +224,9 @@ const Chat = () => {
 
       {/* Message input */}
       <div className="p-4 bg-white border-t">
-        <div className="max-w-3xl mx-auto relative">
+        <div className="max-w-3xl mx-auto relative rainbow-glow-light">
           <textarea
-            className="w-full p-3 pr-12 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none h-16"
+            className="w-full p-3 pr-12 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none h-16 glass-input"
             placeholder="Ask me about the PDF..."
             value={newMessage}
             onChange={(e) => setNewMessage(e.target.value)}
@@ -195,7 +237,7 @@ const Chat = () => {
             className={cn(
               "absolute right-3 bottom-3 p-2 rounded-full transition-all duration-200",
               newMessage.trim() && !isLoading 
-                ? "bg-blue-500 hover:bg-blue-600" 
+                ? "bg-blue-500 hover:bg-blue-600 glow-button" 
                 : "bg-gray-400 cursor-not-allowed"
             )}
             disabled={!newMessage.trim() || isLoading}

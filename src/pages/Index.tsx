@@ -1,3 +1,4 @@
+
 import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FileText, Send } from 'lucide-react';
@@ -6,6 +7,7 @@ import { cn } from '@/lib/utils';
 import TypingAnimation from '@/components/TypingAnimation';
 import { useToast } from '@/components/ui/use-toast';
 import { Input } from '@/components/ui/input';
+import { GlowFilters, GlowText } from '@/components/GlowEffects';
 
 const Index = () => {
   const [pdfUploaded, setPdfUploaded] = useState(false);
@@ -57,6 +59,9 @@ const Index = () => {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-b from-white to-gray-50 p-4">
+      {/* SVG Filters for glow effects */}
+      <GlowFilters />
+      
       <div className="w-full max-w-4xl mx-auto relative animate-fade-in backdrop-blur-md">
         <div className="text-center mb-12">
           <h1 className="text-4xl font-bold text-gray-800 mb-4">
@@ -64,6 +69,7 @@ const Index = () => {
               text="Hello, I am Apollo." 
               typingSpeed={70}
               onComplete={() => setTimeout(handleTypingComplete, 500)}
+              hasGlow={true}
             />
           </h1>
           
@@ -74,56 +80,60 @@ const Index = () => {
           )}
         </div>
 
-        <div className="w-full bg-white rounded-xl shadow-lg p-6 transition-all duration-300 backdrop-blur-lg">
-          {pdfUploaded && (
-            <div className="bg-blue-50 rounded-lg p-3 mb-6 animate-fade-in flex items-center">
-              <FileText className="h-5 w-5 text-blue-500 mr-2" />
-              <p className="text-gray-700 text-sm truncate">
-                <span className="font-semibold">Uploaded:</span> {pdfName}
-              </p>
-            </div>
-          )}
-
-          <div className="flex items-center gap-3">
-            <div className="relative flex-1">
-              <Input
-                className={cn(
-                  "w-full py-6 px-4 pr-12 rounded-lg border-2 transition-all duration-300",
-                  pdfUploaded 
-                    ? "border-blue-200 focus:border-blue-400 bg-white" 
-                    : "border-gray-200 bg-gray-50 cursor-not-allowed"
-                )}
-                placeholder={pdfUploaded ? "What would you like to know about this PDF?" : "Upload a PDF to continue..."}
-                value={prompt}
-                onChange={(e) => setPrompt(e.target.value)}
-                disabled={!pdfUploaded}
-              />
-            </div>
-            
-            <Button 
-              variant="outline" 
-              size="icon" 
-              className="h-12 w-12 rounded-full bg-gray-100 hover:bg-gray-200 transition-all duration-300"
-              onClick={() => fileInputRef.current?.click()}
-            >
-              <FileText className="h-5 w-5 text-gray-700" />
-              <span className="sr-only">Upload PDF</span>
-            </Button>
-            
-            <Button
-              size="icon"
-              disabled={!pdfUploaded || !prompt.trim()}
-              className={cn(
-                "h-12 w-12 rounded-full transition-all duration-300",
-                !pdfUploaded || !prompt.trim() 
-                  ? "bg-gray-300 cursor-not-allowed" 
-                  : "bg-blue-500 hover:bg-blue-600 shadow-md hover:shadow-lg"
+        <div className="rainbow-glow w-full">
+          <div className="card w-full">
+            <div className="content w-full bg-white rounded-xl shadow-lg p-6 transition-all duration-300 backdrop-blur-lg">
+              {pdfUploaded && (
+                <div className="bg-blue-50 rounded-lg p-3 mb-6 animate-fade-in flex items-center">
+                  <FileText className="h-5 w-5 text-blue-500 mr-2" />
+                  <p className="text-gray-700 text-sm truncate">
+                    <span className="font-semibold">Uploaded:</span> {pdfName}
+                  </p>
+                </div>
               )}
-              onClick={handleSubmit}
-            >
-              <Send className="h-5 w-5 text-white" />
-              <span className="sr-only">Send</span>
-            </Button>
+
+              <div className="flex items-center gap-3">
+                <div className="relative flex-1">
+                  <Input
+                    className={cn(
+                      "w-full py-6 px-4 pr-12 rounded-lg border-2 transition-all duration-300",
+                      pdfUploaded 
+                        ? "border-blue-200 focus:border-blue-400 bg-white glass-input" 
+                        : "border-gray-200 bg-gray-50 cursor-not-allowed"
+                    )}
+                    placeholder={pdfUploaded ? "What would you like to know about this PDF?" : "Upload a PDF to continue..."}
+                    value={prompt}
+                    onChange={(e) => setPrompt(e.target.value)}
+                    disabled={!pdfUploaded}
+                  />
+                </div>
+                
+                <Button 
+                  variant="outline" 
+                  size="icon" 
+                  className="h-12 w-12 rounded-full bg-gray-100 hover:bg-gray-200 transition-all duration-300"
+                  onClick={() => fileInputRef.current?.click()}
+                >
+                  <FileText className="h-5 w-5 text-gray-700" />
+                  <span className="sr-only">Upload PDF</span>
+                </Button>
+                
+                <Button
+                  size="icon"
+                  disabled={!pdfUploaded || !prompt.trim()}
+                  className={cn(
+                    "h-12 w-12 rounded-full transition-all duration-300",
+                    !pdfUploaded || !prompt.trim() 
+                      ? "bg-gray-300 cursor-not-allowed" 
+                      : "bg-blue-500 hover:bg-blue-600 shadow-md hover:shadow-lg"
+                  )}
+                  onClick={handleSubmit}
+                >
+                  <Send className="h-5 w-5 text-white" />
+                  <span className="sr-only">Send</span>
+                </Button>
+              </div>
+            </div>
           </div>
         </div>
 
