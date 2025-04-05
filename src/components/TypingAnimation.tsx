@@ -18,7 +18,7 @@ const TypingAnimation: React.FC<TypingAnimationProps> = ({
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isComplete, setIsComplete] = useState(false);
 
-  // Transform text for special handling of "Apollo"
+  // Parse the text to identify "Apollo" occurrences
   const processedText = text.split(/(Apollo)/gi).map((part, index) => {
     if (part.toLowerCase() === "apollo") {
       return { text: part, isApollo: true, id: `apollo-${index}` };
@@ -40,16 +40,15 @@ const TypingAnimation: React.FC<TypingAnimationProps> = ({
     }
   }, [currentIndex, text, typingSpeed, isComplete, onComplete]);
 
-  // Render the displayed parts with appropriate styling
-  const displayedParts = () => {
+  // Render processed text with special styling for "Apollo"
+  const renderProcessedText = () => {
     const currentText = displayText;
     return processedText.map(part => {
-      // Check if this part is included in what's currently displayed
       const partText = part.text;
       const textIndex = text.indexOf(partText);
       
       if (currentText.length > textIndex) {
-        // How much of this part is visible
+        // Calculate how much of this part should be visible
         const visibleLength = Math.min(
           partText.length,
           currentText.length - textIndex
@@ -86,7 +85,7 @@ const TypingAnimation: React.FC<TypingAnimationProps> = ({
       }}
     >
       <span className="relative">
-        {hasGlow ? displayedParts() : displayText}
+        {hasGlow ? renderProcessedText() : displayText}
         {!isComplete && (
           <span 
             className={`absolute right-0 top-0 h-full w-1 ${
