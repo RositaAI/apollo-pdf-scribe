@@ -1,4 +1,3 @@
-
 import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Send, ArrowLeft, Loader2 } from 'lucide-react';
@@ -28,7 +27,6 @@ const Chat = () => {
   const { toast } = useToast();
 
   useEffect(() => {
-    // Get data from sessionStorage
     const storedPdfName = sessionStorage.getItem('pdfName');
     const initialPrompt = sessionStorage.getItem('initialPrompt');
     
@@ -45,7 +43,6 @@ const Chat = () => {
     
     setPdfName(storedPdfName);
     
-    // Add the initial prompt as the first message
     const initialMessage: Message = {
       id: Date.now().toString(),
       text: initialPrompt,
@@ -55,7 +52,6 @@ const Chat = () => {
     
     setMessages([initialMessage]);
     
-    // Simulate AI response to initial prompt
     handleAIResponse(initialPrompt);
   }, [navigate, toast]);
 
@@ -70,9 +66,7 @@ const Chat = () => {
   const handleAIResponse = (userMessage: string) => {
     setIsLoading(true);
     
-    // Simulate AI thinking delay (would be replaced with actual API call)
     setTimeout(() => {
-      // Sample response for demonstration (would be replaced with actual API response)
       let aiResponse = '';
       
       if (userMessage.toLowerCase().includes('summary')) {
@@ -87,7 +81,6 @@ const Chat = () => {
       
       const newAiMessageId = Date.now().toString();
       
-      // Add message with typing indicator
       setMessages(prev => [...prev, {
         id: newAiMessageId,
         text: aiResponse,
@@ -114,7 +107,6 @@ const Chat = () => {
     setMessages(prev => [...prev, userMessage]);
     setNewMessage('');
     
-    // Process the message and get AI response
     handleAIResponse(newMessage);
   };
 
@@ -142,10 +134,8 @@ const Chat = () => {
 
   return (
     <div className="flex flex-col h-screen bg-gray-50">
-      {/* Add SVG filters for glow effects */}
       <GlowFilters />
       
-      {/* Header */}
       <header className="flex items-center px-4 py-3 bg-white shadow-sm z-10">
         <Button
           variant="ghost"
@@ -163,7 +153,6 @@ const Chat = () => {
         </div>
       </header>
 
-      {/* Chat messages */}
       <div 
         ref={chatContainerRef}
         className="flex-1 overflow-y-auto p-4 bg-gray-50"
@@ -188,14 +177,13 @@ const Chat = () => {
                 )}
               >
                 {message.isTyping ? (
-                  <div className="glow-text-container">
-                    <TypingAnimation 
-                      text={message.text}
-                      typingSpeed={30}
-                      hasGlow={true}
-                      onComplete={() => handleTypingComplete(message.id)}
-                    />
-                  </div>
+                  <TypingAnimation 
+                    text={message.text}
+                    typingSpeed={30}
+                    hasGlow={true}
+                    onComplete={() => handleTypingComplete(message.id)}
+                    containerMaxWidth="100%"
+                  />
                 ) : (
                   <div className="whitespace-pre-wrap">
                     {message.text.split(/(Apollo)/gi).map((part, index) => {
@@ -226,7 +214,6 @@ const Chat = () => {
         </div>
       </div>
 
-      {/* Message input */}
       <div className="p-4 bg-white border-t">
         <div className="max-w-3xl mx-auto relative rainbow-glow-light">
           <textarea

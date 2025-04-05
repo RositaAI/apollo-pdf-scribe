@@ -1,23 +1,26 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 interface TypingAnimationProps {
   text: string;
   typingSpeed?: number;
   onComplete?: () => void;
   hasGlow?: boolean;
+  containerMaxWidth?: string;
 }
 
 const TypingAnimation: React.FC<TypingAnimationProps> = ({ 
   text, 
   typingSpeed = 50,
   onComplete,
-  hasGlow = false
+  hasGlow = false,
+  containerMaxWidth = "100%"
 }) => {
   const [displayText, setDisplayText] = useState('');
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isComplete, setIsComplete] = useState(false);
   const [fadeOutGlow, setFadeOutGlow] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   // Parse the text to identify "Apollo" occurrences
   const processedText = text.split(/(Apollo)/gi).map((part, index) => {
@@ -46,6 +49,7 @@ const TypingAnimation: React.FC<TypingAnimationProps> = ({
   const renderProcessedText = () => {
     let textSegments = [];
     let position = 0;
+    let charCount = 0;
 
     processedText.forEach((part) => {
       const partText = part.text;
@@ -66,7 +70,19 @@ const TypingAnimation: React.FC<TypingAnimationProps> = ({
               </span>
             );
           } else {
-            textSegments.push(<span key={part.id}>{visibleText}</span>);
+            // Calculate which characters should have the typing glow
+            const chars = visibleText.split('').map((char, idx) => {
+              const isRecentlyTyped = currentIndex - partStart - 3 <= idx && idx < currentIndex - partStart + 1;
+              return (
+                <span 
+                  key={`${part.id}-${idx}`} 
+                  className={isRecentlyTyped ? "typing-glow-char" : ""}
+                >
+                  {char}
+                </span>
+              );
+            });
+            textSegments.push(<span key={part.id}>{chars}</span>);
           }
         }
       }
@@ -78,23 +94,20 @@ const TypingAnimation: React.FC<TypingAnimationProps> = ({
   };
 
   return (
-    <span 
-      className={`typing-animation relative inline-block ${hasGlow ? 'glow-typing' : ''} ${fadeOutGlow ? 'glow-fade-out' : ''}`}
+    <div 
+      ref={containerRef}
+      className="typing-animation-container"
+      style={{ maxWidth: containerMaxWidth }}
     >
-      <span className="relative">
+      <div className="text-wrapper">
         {renderProcessedText()}
         {!isComplete && (
           <span 
-            className={`absolute right-0 top-0 h-full w-1 ${
-              hasGlow ? 'glowing-caret' : 'bg-gray-300'
-            }`} 
-            style={{
-              animation: 'blink-caret 0.75s step-end infinite',
-            }}
+            className={`typing-caret ${hasGlow ? 'glowing-caret' : ''}`}
           ></span>
         )}
-      </span>
-    </span>
+      </div>
+    </div>
   );
 };
 

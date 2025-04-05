@@ -44,7 +44,7 @@ export const GlowFilters = () => {
           </feMerge>
         </filter>
 
-        {/* Improved Apollo name SVG-based white glow filter */}
+        {/* Improved Apollo name SVG-based glow filter with gradient animation */}
         <filter id="apollo-glow" x="-50%" y="-50%" width="200%" height="200%">
           <feGaussianBlur stdDeviation="2" result="blur" />
           <feFlood floodColor="#ffffff" floodOpacity="0.8" result="glowColor"/>
@@ -61,12 +61,24 @@ export const GlowFilters = () => {
           </feMerge>
         </filter>
 
-        {/* Typing caret glow filter with white hue */}
-        <filter id="typing-glow" x="-50%" y="-50%" width="200%" height="200%">
-          <feGaussianBlur stdDeviation="2" result="blur" />
-          <feFlood floodColor="#ffffff" floodOpacity="0.9" result="glowColor"/>
+        {/* Blue character glow filter for typing animation */}
+        <filter id="typing-char-glow" x="-50%" y="-50%" width="200%" height="200%">
+          <feGaussianBlur stdDeviation="1.5" result="blur" />
+          <feFlood floodColor="#06b6d4" floodOpacity="0.8" result="glowColor"/>
           <feComposite in="glowColor" in2="blur" operator="in" result="softGlow"/>
-          <feGaussianBlur in="softGlow" stdDeviation="3" result="expandedGlow"/>
+          <feGaussianBlur in="softGlow" stdDeviation="2" result="expandedGlow"/>
+          <feMerge>
+            <feMergeNode in="expandedGlow" />
+            <feMergeNode in="SourceGraphic" />
+          </feMerge>
+        </filter>
+
+        {/* Cursor glow filter */}
+        <filter id="cursor-glow" x="-50%" y="-50%" width="200%" height="200%">
+          <feGaussianBlur stdDeviation="1" result="blur" />
+          <feFlood floodColor="#06b6d4" floodOpacity="1" result="glowColor"/>
+          <feComposite in="glowColor" in2="blur" operator="in" result="softGlow"/>
+          <feGaussianBlur in="softGlow" stdDeviation="2" result="expandedGlow"/>
           <feMerge>
             <feMergeNode in="expandedGlow" />
             <feMergeNode in="SourceGraphic" />
